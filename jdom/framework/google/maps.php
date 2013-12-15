@@ -10,7 +10,7 @@
 * @license		GNU General Public License
 * @author		Jocelyn HUARD
 *
-* @addon		Google map API v3
+* @addon		Google maps API v3
 * @author		Girolamo Tomaselli - http://bygiro.com
 * @version		0.0.1
 *
@@ -24,9 +24,9 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 
-class JDomFrameworkGoogleMap extends JDomFrameworkGoogle
+class JDomFrameworkGoogleMaps extends JDomFrameworkGoogle
 {	
-	var $assetName = 'map';
+	var $assetName = 'maps';
 	
 	protected static $loaded = array();	
 	

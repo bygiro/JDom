@@ -25,7 +25,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class JDomFrameworkGoogle extends JDomFramework
 {
-	var $fallback = 'map';		//Used for default
+	var $fallback = 'maps';		//Used for default
 
 	var $assetName = 'google';
 	
