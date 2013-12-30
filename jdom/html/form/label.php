@@ -24,6 +24,7 @@ class JDomHtmlFormLabel extends JDomHtmlForm
 {
 	public $domId;
 	public $label;
+	public $markup;
 
 	/*
 	 * Constuctor
@@ -41,21 +42,36 @@ class JDomHtmlFormLabel extends JDomHtmlForm
 
 		parent::__construct($args);
 
+		$this->arg('dataKey'	, null, $args);
+		$this->arg('dataObject'	, null, $args);
 		$this->arg('domId'		, null, $args);
 		$this->arg('label'		, null, $args);
 		$this->arg('domClass'	, null, $args);
 		$this->arg('selectors'	, null, $args);
+		$this->arg('formControl', null, $args);
+		$this->arg('formGroup', null, $args);
+		$this->arg('markup', null, $args, 'label');
+
+		if (!$this->domId)
+			$this->domId = $this->getInputId();
+		
 	}
 
 	function build()
 	{
-		$html = '<label'
-			.	' for="' . $this->domId . '"'
-			.	$this->buildDomClass()
-			.	$this->buildSelectors()
-			.	'>'
+		$html = '<'. $this->markup .' for="<%DOM_ID%>" <%CLASS%><%SELECTORS%>>'
 			.	$this->JText($this->label)
-			.	'</label>';
+			.	'</'. $this->markup .'>';
 		return $html;
+	}
+		
+	protected function parseVars($vars)
+	{
+		return parent::parseVars(array_merge(array(
+			'DOM_ID'		=> $this->domId,
+			'STYLE'		=> $this->buildDomStyles(),
+			'CLASS'			=> $this->buildDomClass(),		//With attrib name
+			'SELECTORS'		=> $this->buildSelectors(),
+		), $vars));
 	}
 }
