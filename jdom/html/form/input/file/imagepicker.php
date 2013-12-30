@@ -64,12 +64,14 @@ class JDomHtmlFormInputFileImagepicker extends JDomHtmlFormInputFile
 
 		$isNew = (empty($this->dataValue));
 
-
+	$htmlPreview = '';
+	if(!$isNew){ /* hack */
 		$htmlPreview = "<div id='" . $this->getInputId('preview') . "' style='" . $pickerStyle . "'>";
 		$htmlPreview .= JDom::_("html.fly.file", $this->options);
 		$htmlPreview .= "</div>";
 		$htmlPreview .= '<div class="clearfix"></div>';
-
+	}
+	
 		$removeList = $this->removeList();
 	
 		//Hidden 
