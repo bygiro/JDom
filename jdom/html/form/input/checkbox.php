@@ -31,11 +31,15 @@ class JDomHtmlFormInputCheckbox extends JDomHtmlFormInput
 	 * 	@dataValue	: value  default = dataObject->dataKey
 	 * 	@domID		: HTML id (DOM)  default=dataKey
 	 *
-	 *
+	 *	@inputValue		: Input value
+	 *	@inputLabel		: Label for input
 	 */
 	function __construct($args)
 	{
 		parent::__construct($args);
+		
+		$this->arg('inputValue'		, 1, $args);
+		$this->arg('inputLabel'		, null, $args);	
 	}
 
 	function build()
@@ -44,11 +48,20 @@ class JDomHtmlFormInputCheckbox extends JDomHtmlFormInput
 
 		$checked = (!empty($this->dataValue));
 
+		$inputVal = 1;
+		if($this->inputValue != '' AND is_string($this->inputValue)){
+			$inputVal = htmlspecialchars($this->inputValue, ENT_COMPAT, 'UTF-8');
+		}
+		
 		$html =	'<input type="checkbox" id="<%DOM_ID%>" name="<%INPUT_NAME%>"<%STYLE%><%CLASS%><%SELECTORS%>'
-			.	' value="1"'
+			.	' value="'. $inputVal .'"'
 			.	($checked?' checked="checked"':'')
 			.	'/>';
-
+			
+		if(isset($this->inputLabel) AND $this->inputLabel != ''){
+			$html .= '<label for="<%DOM_ID%>">'. $this->inputLabel .'</label>';
+		}
+			
 		return $html;
 	}
 }
