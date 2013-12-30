@@ -50,5 +50,8 @@ class plgSystemJdom extends JPlugin
 		$language->load('plg_system_jdom', JPATH_ADMINISTRATOR);
 	
 		JLoader::register('JDom', JPATH_SITE . DS . 'libraries' . DS . 'jdom' . DS . 'dom.php');
+		
+		// form field class
+		JLoader::register('JdomClassFormField', JPATH_SITE . DS . 'libraries' . DS . 'jdom' . DS . 'jform' . DS . 'field.php');
     }
 }
