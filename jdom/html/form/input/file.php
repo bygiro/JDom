@@ -23,7 +23,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class JDomHtmlFormInputFile extends JDomHtmlFormInput
 {
 	var $fallback = 'default';		//Used for default
-
+	protected static $loaded = array();
+	
 	protected $indirect;
 	protected $root;
 	protected $width;
@@ -70,6 +71,28 @@ class JDomHtmlFormInputFile extends JDomHtmlFormInput
 
 		$this->thumb = ($this->width || $this->height);
 
+		// Only load once
+		if (empty(static::$loaded[__METHOD__]))
+		{
+			$script = "
+				jQuery(document).ready(function(){
+					jQuery('form').on('click','.removeList li',function(){
+						var thisData = jQuery(this).data();
+						var container = jQuery(this).closest('div');
+						container.find('#'+ thisData.inputTarget ).val(thisData.task);
+						container.find('.btn.dropdown-toggle i').attr('class',thisData.iconTask);
+				});
+			});";
+
+			$this->addScriptInline($script);
+
+			$css = '.removeList li a{
+					cursor: pointer;
+				}';
+			$this->addStyleDeclaration($css);
+		
+			static::$loaded[__METHOD__] = true;
+		}
 	}
 
 
