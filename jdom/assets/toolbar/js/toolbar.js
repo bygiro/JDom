@@ -2,19 +2,25 @@ jQuery(document).ready(function(){
 	jQuery("#adminForm").validationEngine();
 });
 
-Joomla.submitform = function(pressbutton)
+Joomla.submitform = function(pressbutton, form)
 {
+	if (typeof form === 'undefined'){
+		form = jQuery('#adminForm');
+	} else if(!(form instanceof jQuery)){
+		form = jQuery(form);
+	}
+
 	//Unlock the page
 	holdForm = false;
 
 	if (typeof(pressbutton) == 'undefined')
 	{
-		jQuery("#adminForm").submit();
+		form.submit();
 		return;
 	}	
 	var parts = pressbutton.split('.');
 
-	jQuery("#task").val(pressbutton);
+	form.find("#task").val(pressbutton);
 	switch(parts[parts.length-1])
 	{
 		case 'save':
@@ -25,17 +31,21 @@ Joomla.submitform = function(pressbutton)
 			break;
 
 		default:
-			jQuery("#adminForm").validationEngine('detach');
+			form.validationEngine('detach');
 			break;
 	}
 
-	jQuery("#adminForm").submit();
+	form.submit();
 }
+
 
 Joomla.submitformAjax = function(task, form)
 {
-	if (typeof(form) === 'undefined')
-		form = document.getElementById('adminForm');
+	if (typeof form === 'undefined'){
+		form = jQuery('#adminForm');
+	} else if(!(form instanceof jQuery)){
+		form = jQuery(form);
+	}
 	
 	var taskName = '';
 	if (typeof(task) !== 'undefined' && task !== '')
@@ -43,7 +53,7 @@ Joomla.submitformAjax = function(task, form)
 		form.task.value = task;
 		var parts = task.split('.');
 		taskName = parts[parts.length-1];	
-		jQuery('#adminForm .cktoolbar span.' + taskName).addClass('spinner');
+		form.find('.cktoolbar span.' + taskName).addClass('spinner');
 	}
 	else
 		//Not ajax when controller task is empty (ex: filters, search, ...)
