@@ -132,7 +132,12 @@ class JDomHtmlFormInput extends JDomHtmlForm
 	
 		if ($this->title)
 			$this->addSelector('title', $this->title);
-		
+
+		if (!$this->domId)
+			$this->domId = $this->getInputId();
+			
+		if (!$this->domName)
+			$this->domName = $this->getInputName();
 	}
 
 	function addValidatorHandler($regex= null, $handler = null)
@@ -184,60 +189,6 @@ class JDomHtmlFormInput extends JDomHtmlForm
 			'VALIDOR_ICON' 	=> $this->buildValidatorIcon(),
 			'JSON_REL' 		=> htmlspecialchars($this->jsonArgs(), ENT_COMPAT, 'UTF-8'),
 		), $vars));
-	}
-	
-	function getInputName($suffix = null)
-	{
-		$name = $dataKey = $this->dataKey;
-		if (!empty($this->formControl))
-		{
-			//Check if formControl is already instancied
-			if (preg_match("/^" . $this->formControl. "\[(.+)\]$/", $name, $results))
-			{
-				//Fin out the dataKey original when formControl is already given in dataKey
-				if (isset($results[1]))
-					$dataKey = $results[1];
-			}
-			else {
-				// Embed in the formControl array
-				$name = "[" . $name . "]";
-				if (!empty($this->formGroup))
-					$name = '[' . implode('][', explode('.', $this->formGroup)) . ']' . $name;
-				
-				$name = $this->formControl . $name;
-			}
-		}
-
-		if ($this->domName)
-			$name = $this->domName;
-		
-		if ($suffix)
-			$name = str_replace($dataKey, $dataKey . '-' . $suffix, $name);			
-		
-		return $name;
-	}
-
-
-	function getInputId($suffix = null)
-	{
-		$id = $this->dataKey;
-		if (!empty($this->formControl))
-		{
-			
-			if (!empty($this->formGroup))
-				$id = str_replace('.', '_', $this->formGroup)  .'_'. $id;
-			
-			$id = $this->formControl . '_' . $id;
-			
-		}
-
-		if ($this->domId)
-			$id = $this->domId;
-		
-		if ($suffix)
-			$id .= '-' . $suffix;
-		
-		return $id;
 	}
 
 

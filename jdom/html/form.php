@@ -43,9 +43,43 @@ class JDomHtmlForm extends JDomHtml
 
 	}
 
+	
+	function getInputName($suffix = null)
+	{
+		$name =  $this->dataKey;		
+		if($suffix){
+			$name =  $this->dataKey .'-'. $suffix;
+		}
+		
+		if($this->formControl != null OR $this->formGroup != null){
+			$name = '[' . $name . ']';
+			if ($this->formGroup != null){
+				$group = preg_replace("/\.(?!([^\{\{]+)?\}\})/i",'_',$this->formGroup);
+				$name = '[' . implode('][', explode('_', $group)) . ']'. $name;		
+			}
+			
+			if ($this->formControl != null){
+				$name = $this->formControl . $name;
+			}
+		}
+		
+		return $name;
+	}
 
-
-
+	function getInputId($suffix = null)
+	{
+		$id = $this->dataKey;
+		if ($this->formGroup != null)
+			$id = preg_replace("/\.(?!([^\{\{]+)?\}\})/i",'_',$this->formGroup) .'_'. $id;
+		
+		if ($this->formControl != null)
+			$id = $this->formControl . '_' . $id;
+		
+		if ($suffix)
+			$id .= '-'. $suffix;
+		
+		return $id;
+	}
 
 
 }
