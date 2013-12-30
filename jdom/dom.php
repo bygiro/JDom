@@ -476,10 +476,31 @@ class JDom extends JObject
 		//CSS
 		$this->buildCss();
 		$this->attachCssFiles();
+		
+		// load extra language files
+		$this->loadLanguageFiles();
 	}
 
 	public function buildJs()	{}
 	
+
+	protected function loadLanguageFiles()
+	{
+		if(!$this->loadLanguageFile OR !isset($this->assetName) OR ($this->assetName == null)){
+			return;
+		}
+		
+		$language = JFactory::getLanguage();
+	//	$fileBase = JPATH_SITE . DS . 'libraries'. DS .'jdom' ; // ONE folder with all the language files or language files on each asset?!?!
+		$fileBase = JPATH_SITE . DS . 'libraries'. DS .'jdom' . DS . 'assets' . DS . $this->assetName ;
+		$file = $fileBase . DS .'language'. DS . $language->getTag() .DS. $language->getTag() . '.plg_system_jdom_'. $this->assetName .'.ini';
+		
+		if (file_exists($file)){		
+			$language->load('plg_system_jdom_'. $this->assetName , $fileBase, $language->getTag());
+		}
+	}
+
+
 	protected function attachJsFiles()
 	{
 		//Javascript
@@ -1144,6 +1165,12 @@ array(	"\\", "\/", 	"\#",	"\!", 	"\^", "$", "\(", "\)", "\[", "\]", "\{", "\}", 
 		return str_replace($patterns, $replacements, $dateFormat);
 
 	}
-	
-	
+
+	function escapeJsonString($value) {
+		# list from www.json.org: (\b backspace, \f formfeed)    
+		$escapers =     array("\\",     "/",   "\"",  "\n",  "\r",  "\t", "\x08", "\x0c");
+		$replacements = array("\\\\", "\\/", "\\\"", "\\n", "\\r", "\\t",  "\\f",  "\\b");
+		$result = str_replace($escapers, $replacements, $value);
+		return $result;
+	}
 }

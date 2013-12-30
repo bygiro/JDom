@@ -186,8 +186,7 @@ class JdomClassFormField extends JFormField
 	{
 		$this->jdomOptions = $options;
 	}
-
-/* hack */	
+	
 	public function getOutput($tmplEngine = null)
 	{		
 		$html = '';
@@ -241,5 +240,5 @@ class JdomClassFormField extends JFormField
 		$result = str_replace($escapers, $replacements, $value);
 		return $result;
 	}	
-/* hack */	
+
 }
