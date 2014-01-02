@@ -121,7 +121,7 @@ class JDomHtmlFormInputFileDefault extends JDomHtmlFormInputFile
 
 		$removeList = $this->removeList();
 		// Create the remove actions list	
-		if (!$isNew AND count($removeList) > 0)
+		if (count($removeList) > 0)
 		{			
 			$html .= '<a class="btn dropdown-toggle" id="' . $idRemoveBtn . '" data-toggle="dropdown">';
 			$html .= $htmlIconRemove;
