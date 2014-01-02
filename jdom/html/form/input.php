@@ -178,8 +178,8 @@ class JDomHtmlFormInput extends JDomHtmlForm
 	protected function parseVars($vars)
 	{
 		return parent::parseVars(array_merge(array(
-			'DOM_ID'		=> $this->getInputId(),
-			'INPUT_NAME'	=> $this->getInputName(),
+			'DOM_ID'		=> $this->domId,
+			'INPUT_NAME'	=> $this->domName,
 			'STYLE'		=> $this->buildDomStyles(),
 			'CLASS'			=> $this->buildDomClass(),		//With attrib name
 			'CLASSES'		=> $this->getDomClass(),		// Only classes
