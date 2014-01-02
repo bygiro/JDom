@@ -22,6 +22,9 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+// JDOM html validator
+JLoader::register('JdomHtmlValidator', JPATH_SITE . DS . 'libraries' . DS . 'jdom' . DS . 'jform' . DS . 'html' . DS . 'validator.php');
+
 /**
 * Form field for Jdom.
 *
@@ -124,7 +127,7 @@ class JdomClassFormField extends JFormField
 		//If the field is required without validation rule, the helper is called only for the required message implementation.
 
 		$input = $this->input;		
-		$input .= JformsHelperHtmlValidator::loadValidators($this->element, $this->id);
+		$input .= JdomHtmlValidator::loadValidators($this->element, $this->id);
 
 		return $input;
 	}
