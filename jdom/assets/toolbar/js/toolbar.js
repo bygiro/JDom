@@ -4,7 +4,7 @@ jQuery(document).ready(function(){
 
 Joomla.submitform = function(pressbutton, form)
 {
-	if (typeof form === 'undefined'){
+	if (typeof form == 'undefined'){
 		form = jQuery('#adminForm');
 	} else if(!(form instanceof jQuery)){
 		form = jQuery(form);
