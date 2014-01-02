@@ -58,6 +58,7 @@ class JFormFieldCkfile extends JdomClassFormField
 				'dataValue' => $this->value,
 				'height' => $this->getOption('height'),
 				'indirect' => $this->getOption('indirect', null, 'bool'),
+				'actions' => explode(',',$this->getOption('actions', null)),
 				'responsive' => $this->getOption('responsive'),
 				'root' => $this->getOption('root'),
 				'ruleInstance' => $this->getOption('ruleInstance'),
