@@ -122,7 +122,9 @@
 
 		loading: function(object)
 		{
-			$('<div/>', {'class':'jdom-ajax-spinner'}).appendTo($(object));
+			if($(object).attr('id') != 'system-message-container'){
+				$('<div/>', {'class':'jdom-ajax-spinner'}).appendTo($(object));
+			}
 		},
 
 		success: function(object, data, textStatus, jqXHR)
