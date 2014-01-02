@@ -72,7 +72,6 @@ class JDomHtmlFormInputOrdering extends JDomHtmlFormInput
 		$chop = $this->chop;
 		$first = new stdClass();
 
-
 // NEW ITEM
 		if ($this->dataValue === null)
 		{
@@ -135,7 +134,10 @@ class JDomHtmlFormInputOrdering extends JDomHtmlFormInput
 
 		$html = JDom::_('html.form.input.select', array_merge($this->options, array(
 																	'list' => $items,
+																	'dataKey' => $dataKey,
 																	'listKey' => $dataKey,
+																	'formControl' => $this->formControl,
+																	'formGroup' => $this->formGroup,
 																	'labelKey' => 'text',
 																	'dataValue' => (int)$this->dataValue
 																	)));
