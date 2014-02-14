@@ -71,7 +71,7 @@ class JDomHtmlGridOrdering extends JDomHtmlGrid
 
 		$html = JDom::_('html.form.input', array(
 			'domName' => 'order[]',
-			'dataValue' => $this->dataValue,
+			'dataValue' => intVal($this->dataValue),
 			'size' => 5,
 			'styles' => array(
 				'text-align' => 'center',
