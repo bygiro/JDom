@@ -75,16 +75,14 @@ class JDomHtmlFormInputFile extends JDomHtmlFormInput
 		if (empty(static::$loaded[__METHOD__]))
 		{
 			$script = "
-				jQuery(document).ready(function(){
-					jQuery('form').on('click','.removeList li',function(){
-						var thisData = jQuery(this).data();
-						var container = jQuery(this).closest('div');
-						container.find('#'+ thisData.inputTarget ).val(thisData.task);
-						container.find('.btn.dropdown-toggle i').attr('class',thisData.iconTask);
-				});
-			});";
+				jQuery('form').on('click','.removeList li',function(){
+					var thisData = jQuery(this).data();
+					var container = jQuery(this).closest('div');
+					container.find('#'+ thisData.inputTarget ).val(thisData.task);
+					container.find('.btn.dropdown-toggle i').attr('class',thisData.iconTask);
+				});";
 
-			$this->addScriptInline($script);
+			$this->addScriptInline($script, true);
 
 			$css = '.removeList li a{
 					cursor: pointer;

@@ -48,10 +48,12 @@ class JDomHtmlFormInputCheckbox extends JDomHtmlFormInput
 
 		$checked = (!empty($this->dataValue));
 
+		
 		$inputVal = 1;
 		if($this->inputValue != '' AND is_string($this->inputValue)){
 			$inputVal = htmlspecialchars($this->inputValue, ENT_COMPAT, 'UTF-8');
 		}
+
 		
 		$html =	'<input type="checkbox" id="<%DOM_ID%>" name="<%INPUT_NAME%>"<%STYLE%><%CLASS%><%SELECTORS%>'
 			.	' value="'. $inputVal .'"'

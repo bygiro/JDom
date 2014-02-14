@@ -72,6 +72,7 @@ class JDomHtmlFormInputOrdering extends JDomHtmlFormInput
 		$chop = $this->chop;
 		$first = new stdClass();
 
+
 // NEW ITEM
 		if ($this->dataValue === null)
 		{

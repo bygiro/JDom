@@ -22,7 +22,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class JDomHtmlFlyCook extends JDomHtmlFly
 {
-	var $level = 3;				//Namespace position
 	var $fallback = 'todo';	//Used for default
 
 

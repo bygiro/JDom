@@ -84,20 +84,8 @@ class JDomHtmlFlyFile extends JDomHtmlFly
 			$this->indirect = 'direct';
 
 	}
-	
-	function getComponentHelper()
-	{
-		$helperClass = ucfirst(substr($this->getExtension(), 4)) . 'Helper';
-		
-		if (!class_exists($helperClass))
-		{
-			echo('Class <strong>' . $helperClass . '<strong> not found');
-			return;
-		}
-		return $helperClass;
-	}
 
-	function getFileUrl($thumb = false)
+	function getFileUrl($thumb = false, $link = false)
 	{
 		$helperClass = $this->getComponentHelper();		
 		if (!$helperClass)
@@ -108,16 +96,24 @@ class JDomHtmlFlyFile extends JDomHtmlFly
 		
 		if (empty($path))
 			$path = $this->root .DS. $this->dataValue;
-		
+
+
+		// $link = false when creating the image thumb. 'download' not allowed in this case.
+		// Then, pass a second time to eventually create the download URL	
 		$options = array();
 		if ($thumb)
 			$options = array(
 				'width' => $this->width,
 				'height' => $this->height,
-				'attrs' => $this->attrs,
+				'attrs' => $this->attrs,			
+			);
+		else if ($link)
+		{
+			$options = array(
 				'download' => ($this->target == 'download')
 			
 			);
+		}
 
 		switch ($this->indirect)
 		{

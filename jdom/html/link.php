@@ -142,14 +142,30 @@ class JDomHtmlLink extends JDomHtml
 
 		if ($this->modal_width && $this->modal_height)
 		{
-			$rel .=	", size: {x: " . ((int)$this->modal_width?(int)$this->modal_width:"null")
-						. 	", y: " . ((int)$this->modal_height?(int)$this->modal_height:"null")
+			$w = (int)$this->modal_width;
+			$h = (int)$this->modal_height;
+			
+			$rel .=	", size: {x: " . ($w?$w:"null")
+						. 	", y: " . ($h?$h:"null")
 						. "}";
 		}
+		if ($this->modalScrolling)
+		{
+			$options = array("auto", "no", "yes");
+			if (!in_array(strtolower($this->modalScrolling), $options))
+				$this->modalScrolling = "auto";
+
+			$rel .=	", iframeOptions: {scrolling:'" . $this->modalScrolling
+						. "'}";
+		}
+		if ($this->modalOnclose)
+		{
+			$rel .=	", onClose: function() {" . $this->modalOnclose . "}";
+		}
+		
 		$rel.=	"}";
 		
 		$this->addSelector('rel', $rel);
-
 	}
 
 	protected function parseVars($vars)

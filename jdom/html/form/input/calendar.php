@@ -110,7 +110,7 @@ class JDomHtmlFormInputCalendar extends JDomHtmlFormInput
 			// Does not herit the event
 			'submitEventName' => null
 		)));
-		$dom->addClass('input-medium');
+		$dom->addClass('input-medium'); 
 		$htmlInput = $dom->output();
 
 		//Create the icon
