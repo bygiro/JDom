@@ -41,6 +41,13 @@ class JdomClassFormField extends JFormField
 	protected $input = null;
 
 	/**
+	* Cache for ACL actions
+	*
+	* @var object
+	*/
+	protected static $acl = null;
+
+	/**
 	* The literal label HTML.
 	*
 	* @var string
@@ -97,7 +104,7 @@ class JdomClassFormField extends JFormField
 
 		$access = (string)$this->element['access'];
 
-		$acl = JformsHelper::getActions();
+		$acl = $this->getActions();
 		foreach(explode(",", $access) as $action)
 			if ($acl->get($action))
 				return true;
@@ -189,24 +196,161 @@ class JdomClassFormField extends JFormField
 	{
 		$this->jdomOptions = $options;
 	}
+
+
+	public function getAllLabels()
+	{
+		$values = array();
+		$type = $this->getOption('type');
 	
+		switch($type){		
+			case 'accesslevel':
+			case 'author':
+			case 'checkbox':
+			case 'checkboxes':
+			case 'chromestyle':
+			case 'ckaccesslevel':
+			case 'ckcheckbox':
+			case 'ckcheckboxes':
+			case 'ckcombo':
+			case 'ckcontentlanguage':
+			case 'cklist':
+			case 'ckradio':
+			case 'ckrules':
+			case 'combo':
+			case 'contentlanguage':
+			case 'contenttype':
+			case 'databaseconnection':
+			case 'imagelist':
+			case 'language':
+			case 'list':
+			case 'predefinedlist':
+			case 'radio':
+			case 'rules':
+			case 'sql':
+			case 'status':
+			
+				// array values				
+				if(($type == 'ckcheckbox' OR $type == 'checkbox') AND (string)$this->element['value'] <= 1){
+					$values[0] = JText::_('JNO');
+					$values[1] = JText::_('JYES');
+				}				
+				
+				$options = $this->getOptions();
+				foreach($options as $opt){
+					$listKey = $this->getOption('listKey') ? $this->getOption('listKey') : 'id';
+					$labelKey = $this->getOption('labelKey') ? $this->getOption('labelKey') : 'text';
+					$values[$opt->$listKey] = $opt->$labelKey;
+				}
+			break;
+		}
+
+		return $values;
+	}
+
 	public function getOutput($tmplEngine = null)
-	{		
+	{
 		$html = '';
-		switch($tmplEngine){
-			case 'doT':
-				$html .= $this->value;
+		if(!isset($this->value)){
+			return $html;
+		}
+		
+		$values = $this->getAllLabels();
+		$type = $this->getOption('type');
+
+		switch($type){				
+			case 'ckfile':
+				// TO DO: find a better place to create the jdomOptions
+				$this->jdomOptions = array_merge(array(
+						'dataKey' => $this->getOption('name'),
+						'formGroup' => $this->group,
+						'formControl' => $this->formControl,
+						'domClass' => $this->getOption('class'),
+						'dataValue' => $this->value,
+						'height' => $this->getOption('height'),
+						'indirect' => $this->getOption('indirect', null, 'bool'),
+						'actions' => explode(',',$this->getOption('actions', null)),
+						'responsive' => $this->getOption('responsive'),
+						'preview' => $this->getOption('preview'),
+						'root' => $this->getOption('root'),
+						'ruleInstance' => $this->getOption('ruleInstance'),
+						'view' => $this->getOption('view'),
+						'width' => $this->getOption('width')
+					), $this->jdomOptions);
+
+				$preview = false;
+				if ($this->jdomOptions['preview'] == 'true'){
+					$preview = true;
+				}
+
+				switch($tmplEngine){
+					case 'doT':
+					default:						
+						if($preview){			
+							$html .= JDom::_("html.fly.file.image", $this->jdomOptions);
+						}
+						
+						$html .= $this->value;
+						
+					break;
+				}
 				break;
 				
 			default:
-				$html .= $this->value;
-				break;
+				if(count($values)){
+					$fieldName = $this->getOption('name');
+					switch($tmplEngine){
+						case 'doT':
+							$values = str_replace("'","\'",$this->escapeJsonString(json_encode($values)));
+							$html .= 
+								'{{ var value,tmp_val,vals = JSON.parse(\''. $values .'\');
+										tmp_val = it.'. $fieldName .';
+										}}
+										{{ if(typeof it.'. $fieldName .' == "boolean"){ 
+											tmp_val = 0;
+											if(it.'. $fieldName .'){
+												tmp_val = 1; }}
+											{{ } }}
+										{{ } 
+										value = vals[tmp_val]; }}
+									{{=value || ""}}';
+							break;
+							
+						default:
+							if(isset($values[$this->value])){
+								$html .= $values[$this->value];
+							} else {
+								$html .= $this->value;
+							}
+							break;
+					}				
+				} else {			
+					$html .= $this->value;
+				}
 		}
 
 		return $html;
 	}
 	
 
+	protected function getOptions(){
+		if (isset($this->jdomOptions['list'])){
+			$options = $this->jdomOptions['list'];
+		}
+		//Get the options from XML
+		foreach ($this->element->children() as $option)
+		{
+			$opt = new stdClass();
+			foreach($option->attributes() as $attr => $value)
+				$opt->$attr = (string)$value;
+	
+			$opt->text = JText::_(trim((string) $option));
+			$options[] = $opt;
+		}
+		
+		return $options;
+	}
+	
 	/**
 	* Method to get the field label markup.
 	*
@@ -227,21 +371,65 @@ class JdomClassFormField extends JFormField
 	
 		$this->label = JDom::_('html.form.label', array_merge(array(
 				'dataKey' => $this->getOption('name'),
+				'required' => $this->getOption('required'),
 				'formGroup' => $this->group,
 				'formControl' => $this->formControl,
 				'label' => $this->getOption('label'),
+				'description' => $this->getOption('description'),
 				'markup' => $this->markup
 			), $this->jdomOptions));
 
 		return $this->label;
 	}	
 
+	public function getXML(){				
+		return $this->element;
+	}
+		
 	function escapeJsonString($value) {
 		# list from www.json.org: (\b backspace, \f formfeed)    
 		$escapers =     array("\\",     "/",   "\"",  "\n",  "\r",  "\t", "\x08", "\x0c");
 		$replacements = array("\\\\", "\\/", "\\\"", "\\n", "\\r", "\\t",  "\\f",  "\\b");
 		$result = str_replace($escapers, $replacements, $value);
 		return $result;
-	}	
+	}
 
+	/**
+	* Gets a list of the actions that can be performed.
+	*
+	* @access	public static
+	* @param	integer	$itemId	The item ID.
+	*
+	* @return	JObject	An ACL object containing authorizations
+	*
+	* @since	1.6
+	*/
+	public static function getActions($itemId = 0)
+	{
+		if (isset(self::$acl))
+			return self::$acl;
+
+		$user	= JFactory::getUser();
+		$result	= new JObject;
+
+		$actions = array(
+			'core.admin',
+			'core.manage',
+			'core.create',
+			'core.edit',
+			'core.edit.state',
+			'core.edit.own',
+			'core.delete',
+			'core.delete.own',
+			'core.view.own',
+		);
+
+		foreach ($actions as $action)
+			$result->set($action, $user->authorise($action, COM_JFORMS));
+
+		self::$acl = $result;
+
+		return $result;
+	}	
+	
 }
