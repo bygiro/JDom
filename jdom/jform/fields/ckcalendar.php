@@ -58,6 +58,7 @@ class JFormFieldCkcalendar extends JdomClassFormField
 				'dataValue' => $this->value,
 				'dateFormat' => $this->getOption('format'),
 				'filter' => $this->getOption('filter'),
+				'selectors' => $this->getOption('selectors'),
 				'placeholder' => $this->getOption('placeholder'),
 				'responsive' => $this->getOption('responsive'),
 				'size' => $this->getOption('size'),

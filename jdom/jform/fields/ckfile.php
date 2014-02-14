@@ -60,6 +60,7 @@ class JFormFieldCkfile extends JdomClassFormField
 				'indirect' => $this->getOption('indirect', null, 'bool'),
 				'actions' => explode(',',$this->getOption('actions', null)),
 				'responsive' => $this->getOption('responsive'),
+				'preview' => $this->getOption('preview'),
 				'root' => $this->getOption('root'),
 				'ruleInstance' => $this->getOption('ruleInstance'),
 				'view' => $this->getOption('view'),
