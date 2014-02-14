@@ -56,7 +56,7 @@ class JFormFieldCksearch extends JdomClassFormField
 				'formControl' => $this->formControl,
 				'domClass' => $this->getOption('class'),
 				'dataValue' => $this->value,
-				'label' => JText::_($this->getOption('placeholder',  $this->getOption('label'))),
+				'label' => $this->getOption('label'),
 				'placeholder' => $this->getOption('placeholder'),
 				'responsive' => $this->getOption('responsive'),
 				'size' => $this->getOption('size')
