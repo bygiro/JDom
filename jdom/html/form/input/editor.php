@@ -74,7 +74,7 @@ class JDomHtmlFormInputEditor extends JDomHtmlFormInput
 
 
 		$html .= '<div class="form-widget">';
-		$html .= $editor->display($this->getInputName(), $this->dataValue, $this->width, $this->height, $this->cols, $this->rows, false);
+		$html .= $editor->display($this->getInputName(), $this->dataValue, $this->width, $this->height, $this->cols, $this->rows, false, $this->domId);
 		$html .= '</div>';
 
 		return $html;
