@@ -132,12 +132,12 @@ class JDomHtmlFormInput extends JDomHtmlForm
 	
 		if ($this->title)
 			$this->addSelector('title', $this->title);
-
-		if (!$this->domId)
+			
+		if (!$this->domId OR $this->domId == '')
 			$this->domId = $this->getInputId();
 			
-		if (!$this->domName)
-			$this->domName = $this->getInputName();
+		if (!$this->domName OR $this->domName == '')
+			$this->domName = $this->getInputName();		
 	}
 
 	function addValidatorHandler($regex= null, $handler = null)
@@ -176,15 +176,20 @@ class JDomHtmlFormInput extends JDomHtmlForm
 	}
 
 	protected function parseVars($vars)
-	{
+	{	
+		$value = '';
+		if(!is_array($this->dataValue) AND !is_object($this->dataValue)){
+			$value = htmlspecialchars($this->dataValue, ENT_COMPAT, 'UTF-8');
+		}
+		
 		return parent::parseVars(array_merge(array(
 			'DOM_ID'		=> $this->domId,
 			'INPUT_NAME'	=> $this->domName,
-			'STYLE'		=> $this->buildDomStyles(),
+			'STYLE'			=> $this->buildDomStyles(),
 			'CLASS'			=> $this->buildDomClass(),		//With attrib name
 			'CLASSES'		=> $this->getDomClass(),		// Only classes
 			'SELECTORS'		=> $this->buildSelectors(),
-			'VALUE'			=> htmlspecialchars($this->dataValue, ENT_COMPAT, 'UTF-8'),
+			'VALUE'			=> $value,
 			'MESSAGE' 		=> $this->buildValidatorMessage(),
 			'VALIDOR_ICON' 	=> $this->buildValidatorIcon(),
 			'JSON_REL' 		=> htmlspecialchars($this->jsonArgs(), ENT_COMPAT, 'UTF-8'),
