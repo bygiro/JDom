@@ -49,8 +49,11 @@ class JDomFrameworkBootstrapCore extends JDomFrameworkBootstrap
 			return;
 		
 		//Bootstrap is already in the core since Joomla 3.0. And already loaded.
+		 // fix for javascript files order
+		/*
 		if ($this->jVersion('3.0'))
 			return;
+		*/
 		
 		$jsFile = 'bootstrap.min.js';
 		$assetFile = $this->assetFilePath('js', $jsFile);
