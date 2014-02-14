@@ -57,6 +57,7 @@ class JDom extends JObject
 	
 	protected $args;
 	protected $fallback;
+	protected $loadLanguageFile;
 	
 	protected static $loaded = array();
 	protected $extension;
@@ -478,25 +479,41 @@ class JDom extends JObject
 		$this->attachCssFiles();
 		
 		// load extra language files
-		$this->loadLanguageFiles();
+		$this->loadLanguageFiles(); 
 	}
 
 	public function buildJs()	{}
 	
 
-	protected function loadLanguageFiles()
-	{
-		if(!$this->loadLanguageFile OR !isset($this->assetName) OR ($this->assetName == null)){
+	public function loadLanguageFiles($forceLoad = false, $assetName = null)
+	{	
+		if(!$this->loadLanguageFile AND !$forceLoad){
 			return;
 		}
 		
+		if(!$assetName AND isset($this->assetName)){
+			$assetName = $this->assetName;
+		}
+		
+		if($assetName == ''){
+			return;
+		}
+	
 		$language = JFactory::getLanguage();
 	//	$fileBase = JPATH_SITE . DS . 'libraries'. DS .'jdom' ; // ONE folder with all the language files or language files on each asset?!?!
-		$fileBase = JPATH_SITE . DS . 'libraries'. DS .'jdom' . DS . 'assets' . DS . $this->assetName ;
-		$file = $fileBase . DS .'language'. DS . $language->getTag() .DS. $language->getTag() . '.plg_system_jdom_'. $this->assetName .'.ini';
+		$fileBase = JPATH_SITE . DS . 'libraries'. DS .'jdom' . DS . 'assets' . DS . $assetName ;
 		
+		$langTag = $language->getTag();
+		$file = $fileBase . DS .'language'. DS . $langTag .DS. $langTag . '.plg_system_jdom_'. $assetName .'.ini';
+
+		if(!file_exists($file)){
+			// fallback into ENGLISH
+			$langTag = 'en-GB';
+			$file = $fileBase . DS .'language'. DS . $langTag .DS. $langTag . '.plg_system_jdom_'. $assetName .'.ini';
+		}
+
 		if (file_exists($file)){		
-			$language->load('plg_system_jdom_'. $this->assetName , $fileBase, $language->getTag());
+			$language->load('plg_system_jdom_'. $assetName , $fileBase, $langTag);
 		}
 	}
 
@@ -658,7 +675,7 @@ class JDom extends JObject
 
 	protected function addStyleDeclaration($css)
 	{
-		if (isset(self::$loaded[__METHOD__][$relativeName]))
+		if (isset(self::$loaded[__METHOD__][$css]))
 				return;
 	
 		JFactory::getDocument()->addStyleDeclaration($css);
@@ -705,7 +722,7 @@ class JDom extends JObject
 			. implode(";\n", $scripts) 
 			. '});';
 
-		$jsScript .= '<script type="text/javascript">'
+		$jsScript = '<script type="text/javascript">'
 			.	$jsScriptCallback
 			. 	'</script>';
 		
