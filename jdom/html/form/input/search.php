@@ -30,6 +30,7 @@ class JDomHtmlFormInputSearch extends JDomHtmlFormInput
 	
 	var $size;
 	var $label;
+	var $placeholder;
 
 	/*
 	 * Constuctor
@@ -50,17 +51,15 @@ class JDomHtmlFormInputSearch extends JDomHtmlFormInput
 
 		$this->arg('size'		, null, $args);
 		$this->arg('label'		, null, $args);
+		$this->arg('placeholder', null, $args);
 	}
 
 	function build()
 	{
-
 		$htmlInput = JDom::_('html.form.input', array_merge($this->options, array(
-			'placeholder' => $this->label,
-			'title' => $this->label,
+			'placeholder' => $this->placeholder
 		)));
-		
-		
+			
 		$html = '<div class=" form-search btn-group">';
 		
 			//Button group
