@@ -54,8 +54,8 @@ class JDomHtmlForm extends JDomHtml
 		if($this->formControl != null OR $this->formGroup != null){
 			$name = '[' . $name . ']';
 			if ($this->formGroup != null){
-				$group = preg_replace("/\.(?!([^\{\{]+)?\}\})/i",'_',$this->formGroup);
-				$name = '[' . implode('][', explode('_', $group)) . ']'. $name;		
+				$group = preg_replace("/\.(?!([^\{\{]+)?\}\})/i",'||',$this->formGroup);
+				$name = '[' . implode('][', explode('||', $group)) . ']'. $name;		
 			}
 			
 			if ($this->formControl != null){
