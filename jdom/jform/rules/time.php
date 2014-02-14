@@ -25,13 +25,20 @@ defined('_JEXEC') or die('Restricted access');
 
 
 /**
-* Form validator rule for Jdom.
+* Form validator rule for JDom.
 *
-* @package	Jdom
+* @package	JDom
 * @subpackage	Form
 */
-class JFormRuleNumeric extends JdomClassFormRule
+class JFormRuleTime extends JdomClassFormRule
 {
+	/**
+	* Specifiate the default format.
+	*
+	* @var string
+	*/
+	protected $dateFormat = 'Y-m-d';
+
 	/**
 	* Indicates that this class contains special methods (ie: get()).
 	*
@@ -44,14 +51,37 @@ class JFormRuleNumeric extends JdomClassFormRule
 	*
 	* @var string
 	*/
-	protected $handler = 'numeric';
+	protected $handler = 'time';
 
 	/**
-	* The regular expression to use in testing a form field value.
+	* Use this function to customize your own javascript rule.
+	* $this->regex must be null if you want to customize here.
 	*
-	* @var string
+	* @access	public
+	* @param	JXMLElement	$fieldNode	The JXMLElement object representing the <field /> tag for the form field object.
+	*
+	* @return	string	A JSON string representing the javascript rules validation.
 	*/
-	protected $regex = '^(\d|-)?(\d|,)*.?\d*$';
+	public function getJsonRule($fieldNode)
+	{
+		if (!isset($fieldNode['format']))
+			return;
+
+		$timeFormat = $fieldNode['format'];
+		$regex = JdomHelperDates::strftime2regex($timeFormat, false, false);
+
+		$values = array(
+			"#regex" => 'new RegExp("' . $regex . '", \'i\')'
+		);
+
+		if (isset($fieldNode['msg-incorrect']))
+			$values["alertText"] = LI_PREFIX . JText::_($fieldNode['msg-incorrect']);
+		else
+			$values["alertText"] = LI_PREFIX . JText::sprintf('TEST_ERROR_INCORRECT_FORMAT_EXPECTED', $timeFormat);
+
+		$json = JdomHtmlValidator::jsonFromArray($values);
+		return "{" . LN . $json . LN . "}";
+	}
 
 	/**
 	* Method to test the field.
@@ -72,7 +102,8 @@ class JFormRuleNumeric extends JdomClassFormRule
 		// Common test : Required, Unique
 		if (!self::testDefaults($element, $value, $group, $input, $form))
 			return false;
-
+		//Convert the date format (strftime) in regular exprassion
+		$this->regex = JdomHelperDates::strftime2regex($this->dateFormat, false);
 
 		return true;
 	}

@@ -25,12 +25,12 @@ defined('_JEXEC') or die('Restricted access');
 
 
 /**
-* Form validator rule for Jdom.
+* Form validator rule for JDom.
 *
-* @package	Jdom
+* @package	JDom
 * @subpackage	Form
 */
-class JFormRuleNumeric extends JdomClassFormRule
+class JFormRulePhone extends JdomClassFormRule
 {
 	/**
 	* Indicates that this class contains special methods (ie: get()).
@@ -44,14 +44,14 @@ class JFormRuleNumeric extends JdomClassFormRule
 	*
 	* @var string
 	*/
-	protected $handler = 'numeric';
+	protected $handler = 'phone';
 
 	/**
 	* The regular expression to use in testing a form field value.
 	*
 	* @var string
 	*/
-	protected $regex = '^(\d|-)?(\d|,)*.?\d*$';
+	protected $regex = '^(+[1-9][0-9]*(([0-9]*)|-[0-9]*-))?[0]?[1-9][0-9- ]*$';
 
 	/**
 	* Method to test the field.

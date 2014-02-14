@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 * @package	Jdom
 * @subpackage	Form
 */
-class JdomCkFormRuleDefault extends JdomClassFormRule
+class JFormRuleDefault extends JdomClassFormRule
 {
 	/**
 	* Indicates that this class contains special methods (ie: get()).

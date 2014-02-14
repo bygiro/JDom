@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 * @package	Jdom
 * @subpackage	Form
 */
-class JdomCkFormRuleFile extends JdomClassFormRule
+class JFormRuleFile extends JdomClassFormRule
 {
 	/**
 	* Indicates that this class contains special methods (ie: get()).
@@ -80,7 +80,7 @@ class JdomCkFormRuleFile extends JdomClassFormRule
 		else
 			$values["alertText"] = LI_PREFIX . JText::sprintf('JFORMS_ERROR_ALLOWED_FILES', $allowedExtensionsText);
 
-		$json = JformsHelperHtmlValidator::jsonFromArray($values);
+		$json = JdomHtmlValidator::jsonFromArray($values);
 		return "{" . LN . $json . LN . "}";
 	}
 

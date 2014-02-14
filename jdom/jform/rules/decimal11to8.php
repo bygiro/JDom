@@ -18,7 +18,6 @@
 * -------------\ (----) /----------------------------------------------------------- +
 *               \_)  (_/
 */
-
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
@@ -30,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 * @package	Jdom
 * @subpackage	Form
 */
-class JFormRuleNumeric extends JdomClassFormRule
+class JFormRuleDecimal11to8 extends JdomClassFormRule
 {
 	/**
 	* Indicates that this class contains special methods (ie: get()).
@@ -44,14 +43,14 @@ class JFormRuleNumeric extends JdomClassFormRule
 	*
 	* @var string
 	*/
-	protected $handler = 'numeric';
+	protected $handler = 'decimal11to8';
 
 	/**
 	* The regular expression to use in testing a form field value.
 	*
 	* @var string
 	*/
-	protected $regex = '^(\d|-)?(\d|,)*.?\d*$';
+	protected $regex = '^-?\d{0,3}(\.\d{0,8})?$';
 
 	/**
 	* Method to test the field.

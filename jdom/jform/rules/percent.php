@@ -25,12 +25,12 @@ defined('_JEXEC') or die('Restricted access');
 
 
 /**
-* Form validator rule for Jdom.
+* Form validator rule for JDom.
 *
-* @package	Jdom
+* @package	JDom
 * @subpackage	Form
 */
-class JFormRuleNumeric extends JdomClassFormRule
+class JFormRulePercent extends JdomClassFormRule
 {
 	/**
 	* Indicates that this class contains special methods (ie: get()).
@@ -44,14 +44,14 @@ class JFormRuleNumeric extends JdomClassFormRule
 	*
 	* @var string
 	*/
-	protected $handler = 'numeric';
+	protected $handler = 'percent';
 
 	/**
 	* The regular expression to use in testing a form field value.
 	*
 	* @var string
 	*/
-	protected $regex = '^(\d|-)?(\d|,)*.?\d*$';
+	protected $regex = '^-?\d{0,2}(.\d{1,2})?$|^-?(100)(.[0]{1,2})?$';
 
 	/**
 	* Method to test the field.

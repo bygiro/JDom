@@ -66,7 +66,7 @@ class JdomClassFormRule extends JFormRule
 
 		$values = array();
 
-		$json = JformsHelperHtmlValidator::jsonFromArray($values);
+		$json = JdomHtmlValidator::jsonFromArray($values);
 		return "{" . LN . $json . LN . "}";
 	}
 
