@@ -4,7 +4,7 @@
 *                 (((((  o      <    Generated with Cook Self Service  V2.6.2   |
 *                ( o o )         |______________________________________________|
 * --------oOOO-----(_)-----OOOo---------------------------------- www.j-cook.pro --- +
-* @version		0.1.0
+* @version		0.2.9
 * @package		jForms
 * @subpackage	
 * @copyright	G. Tomaselli
@@ -63,7 +63,7 @@ class JdomHtmlValidator
 		if (isset($fieldNode['msg-incorrect']))
 			$values["alertText"] = LI_PREFIX . JText::_($fieldNode['msg-incorrect']);
 		else
-			$values["alertText"] = LI_PREFIX . JText::_("JFORMS_FORMVALIDATOR_INCORRECT_VALUE");
+			$values["alertText"] = LI_PREFIX . JText::_("PLG_JDOM_FORMVALIDATOR_INCORRECT_VALUE");
 
 		$json = self::jsonFromArray($values);
 
@@ -126,10 +126,10 @@ class JdomHtmlValidator
 
 		$baseRules["required"] = array(
 			"regex"	=> "none",
-			"alertText" => LI_PREFIX . addslashes(JText::_("JFORMS_FORMVALIDATOR_THIS_FIELD_IS_REQUIRED")),
-			"alertTextCheckboxMultiple" => LI_PREFIX . addslashes(JText::_("JFORMS_FORMVALIDATOR_PLEASE_SELECT_AN_OPTION")),
-			"alertTextCheckboxe" => LI_PREFIX . addslashes(JText::_("JFORMS_FORMVALIDATOR_THIS_CHECKBOX_IS_REQUIRED")),
-			"alertTextDateRange" => LI_PREFIX . addslashes(JText::_("JFORMS_FORMVALIDATOR_BOTH_DATE_RANGE_FIELDS_ARE_REQUIRED"))
+			"alertText" => LI_PREFIX . addslashes(JText::_("PLG_JDOM_FORMVALIDATOR_THIS_FIELD_IS_REQUIRED")),
+			"alertTextCheckboxMultiple" => LI_PREFIX . addslashes(JText::_("PLG_JDOM_FORMVALIDATOR_PLEASE_SELECT_AN_OPTION")),
+			"alertTextCheckboxe" => LI_PREFIX . addslashes(JText::_("PLG_JDOM_FORMVALIDATOR_THIS_CHECKBOX_IS_REQUIRED")),
+			"alertTextDateRange" => LI_PREFIX . addslashes(JText::_("PLG_JDOM_FORMVALIDATOR_BOTH_DATE_RANGE_FIELDS_ARE_REQUIRED"))
 
 		);
 
@@ -137,31 +137,30 @@ class JdomHtmlValidator
 
 		$baseRules["numeric"] = array(
 			"#regex"	=> '/^[\-\+]?\d+$/',
-			"alertText" => LI_PREFIX . addslashes(JText::_("JFORMS_FORMVALIDATOR_THIS_IS_NOT_A_VALID_INTEGER")),
+			"alertText" => LI_PREFIX . addslashes(JText::_("PLG_JDOM_FORMVALIDATOR_THIS_IS_NOT_A_VALID_INTEGER")),
 		);
 
 		$baseRules["integer"] = array(
 			"#regex"	=> '/^[\-\+]?\d+$/',
-			"alertText" => LI_PREFIX . addslashes(JText::_("JFORMS_FORMVALIDATOR_THIS_IS_NOT_A_VALID_INTEGER")),
+			"alertText" => LI_PREFIX . addslashes(JText::_("PLG_JDOM_FORMVALIDATOR_THIS_IS_NOT_A_VALID_INTEGER")),
 		);
 
 
 		$baseRules["username"] = array(
 			"#regex"	=> '/![\<|\>|\"|\'|\%|\;|\(|\)|\&]/i',
-			"alertText" => LI_PREFIX . addslashes(JText::_("JFORMS_FORMVALIDATOR_THIS_IS_NOT_A_VALID_USERNAME")),
+			"alertText" => LI_PREFIX . addslashes(JText::_("PLG_JDOM_FORMVALIDATOR_THIS_IS_NOT_A_VALID_USERNAME")),
 		);
 
 
 		$baseRules["password"] = array(
 			"#regex"	=> '/^\S[\S ]{2,98}\S$/',
-			"alertText" => LI_PREFIX . addslashes(JText::_("JFORMS_FORMVALIDATOR_THIS_IS_NOT_A_VALID_PASSWORD")),
+			"alertText" => LI_PREFIX . addslashes(JText::_("PLG_JDOM_FORMVALIDATOR_THIS_IS_NOT_A_VALID_PASSWORD")),
 		);
 
 		$baseRules["email"] = array(
 			"#regex"	=> '/^[a-zA-Z0-9._-]+(\+[a-zA-Z0-9._-]+)*@([a-zA-Z0-9.-]+\.)+[a-zA-Z0-9.-]{2,4}$/',
-			"alertText" => LI_PREFIX . addslashes(JText::_("JFORMS_FORMVALIDATOR_THIS_IS_NOT_A_VALID_EMAIL")),
+			"alertText" => LI_PREFIX . addslashes(JText::_("PLG_JDOM_FORMVALIDATOR_THIS_IS_NOT_A_VALID_EMAIL")),
 		);
-
 
 
 		/* TODO : You can add some rules here
@@ -267,7 +266,6 @@ class JdomHtmlValidator
 		$validates = array();
 		if (count($matches[1]))
 			$validates = explode(",", $matches[1][0]);
-
 
 		$required = (isset($element['required'])?$element['required']:in_array('required', $validates));
 		if ($required != false)
