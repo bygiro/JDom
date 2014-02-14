@@ -136,7 +136,7 @@ class JDomHtmlFormInputSelectRadio extends JDomHtmlFormInputSelect
 		
 		
 		$htmlIcon = '';
-		if ($iconKey)
+		if ($iconKey AND $item->icon != '')
 		{
 			$htmlIcon .= JDom::_('html.icon', array(
 				'icon' => $this->parseKeys($item, $iconKey),
