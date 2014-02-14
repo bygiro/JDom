@@ -44,7 +44,7 @@ class JdomClassFormFieldModal extends JFormField
 	*
 	* @var integer
 	*/
-	protected $width = 400;
+	protected $width = 600;
 
 	/**
 	* Method to get the field input markup.
