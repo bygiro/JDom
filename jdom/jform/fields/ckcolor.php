@@ -5,11 +5,13 @@
 *                ( o o )         |______________________________________________|
 * --------oOOO-----(_)-----OOOo---------------------------------- www.j-cook.pro --- +
 * @version		0.0.1
-* @package		jForms
-* @subpackage	
-* @copyright	G. Tomaselli
-* @author		Girolamo Tomaselli - hhtp://bygiro.com - girotomaselli@gmail.com
-* @license		proprietary software
+* @package		Cook Self Service
+* @subpackage	JDom
+* @license		GNU General Public License
+* @author		Jocelyn HUARD
+*
+* @added by		Girolamo Tomaselli - http://bygiro.com
+* @version		0.0.1
 *
 *             .oooO  Oooo.
 *             (   )  (   )
