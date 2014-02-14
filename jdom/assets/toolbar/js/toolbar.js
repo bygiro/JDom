@@ -12,6 +12,7 @@ Joomla.submitform = function(pressbutton, form)
 
 	//Unlock the page
 	holdForm = false;
+	var valid = false;
 
 	if (typeof(pressbutton) == 'undefined')
 	{
@@ -27,17 +28,72 @@ Joomla.submitform = function(pressbutton, form)
 		case 'save2copy':
 		case 'save2new':
 		case 'apply':
+		
+			
+			valid = checkFullForm(form);
+			
+			
 			//Call the validator
 			break;
 
 		default:
+			valid = true;
 			form.validationEngine('detach');
 			break;
 	}
 
-	form.submit();
+
+	
+	
+	if(valid){
+		if(typeof jQuery.fn.block != 'undefined'){
+			form.block({ 
+				message: Joomla.JText._("PLG_JDOM_BLOCK_UI_DEFAULT_MESSAGE")
+			});		
+		}
+	
+		form.submit();
+	} else {
+		//Lock the page
+		holdForm = false;
+	}
 }
 
+function checkFullForm(form){
+
+	if (typeof form == 'undefined'){
+		form = jQuery('#adminForm');
+	} else if(!(form instanceof jQuery)){
+		form = jQuery(form);
+	}
+	
+	form.find('.fields_errors').remove();
+	var validate = form.validationEngine('validate');
+	
+	if(validate == true){	
+		return true;
+	}
+	
+	var tabs = form.find('a[data-toggle="tab"]');
+	
+	tabs.each(function(index){
+		href = jQuery(this).attr('href');
+		errors = jQuery(href).find('.formError:not(.greenPopup)');
+		numErrors = errors.length;
+		
+		if(numErrors > 0){
+			var error_msg = Joomla.JText._("JSHOP_FORM_WITH_ERRORS");
+			var prompt = '<div class="parentFormadminForm formError" style="opacity: 0.87; position: absolute; top: -40px; left: -13px; margin-top: 0px;"><div style="width: 165px;" class="formErrorContent">'+ error_msg +'<br></div><div class="formErrorArrow"><div class="line10"><!-- --></div><div class="line9"><!-- --></div><div class="line8"><!-- --></div><div class="line7"><!-- --></div><div class="line6"><!-- --></div><div class="line5"><!-- --></div><div class="line4"><!-- --></div><div class="line3"><!-- --></div><div class="line2"><!-- --></div><div class="line1"><!-- --></div></div></div>';
+			jQuery(this).append('<span class="fields_errors"><span class="num">'+ numErrors +'</span>'+ prompt +'</span>');
+		}
+	});
+	
+	tabs.on('click', function(){
+		jQuery(this).find('.fields_errors').remove();	
+	});
+	
+	return false;
+}
 
 Joomla.submitformAjax = function(task, form)
 {
