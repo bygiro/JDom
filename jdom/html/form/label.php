@@ -25,7 +25,10 @@ class JDomHtmlFormLabel extends JDomHtmlForm
 	public $domId;
 	public $label;
 	public $markup;
+	public $required;
+	public $description;
 
+	protected static $loaded = array();
 	/*
 	 * Constuctor
 	 * 	@namespace 	: requested class
@@ -44,6 +47,8 @@ class JDomHtmlFormLabel extends JDomHtmlForm
 
 		$this->arg('dataKey'	, null, $args);
 		$this->arg('dataObject'	, null, $args);
+		$this->arg('required'	, null, $args, false);
+		$this->arg('description', null, $args, '');
 		$this->arg('domId'		, null, $args);
 		$this->arg('label'		, null, $args);
 		$this->arg('domClass'	, null, $args);
@@ -54,13 +59,42 @@ class JDomHtmlFormLabel extends JDomHtmlForm
 
 		if (!$this->domId)
 			$this->domId = $this->getInputId();
+			
+		// Only load once
+		if (!empty(static::$loaded[__METHOD__]))
+		{
+			return;
+		}
+		
+		$script = 'jQuery(".hasTooltip").tooltip({"html": true,"placement":"right"});';
+		$this->addScriptInline($script, true);		
+		
+		
+		static::$loaded[__METHOD__] = true;			
 		
 	}
 
 	function build()
 	{
-		$html = '<'. $this->markup .' for="<%DOM_ID%>" <%CLASS%><%SELECTORS%>>'
-			.	$this->JText($this->label)
+		$required = '';
+		if($this->required){
+			$required = '<span class="star"> *</span>';
+		}
+		
+		if($this->description != ''){
+			$this->domClass .= ' hasTooltip';
+		//	$description = htmlspecialchars(JText::_($this->description));
+			$description = JText::_($this->description);
+
+			if(is_string($this->selectors)){
+				$this->selectors = ' title="'. $description . '"';
+			} else {
+				$this->selectors['title'] = $description;
+			}
+		}
+		
+		$html = '<'. $this->markup .' id="<%DOM_ID%>_label" for="<%DOM_ID%>" <%CLASS%><%SELECTORS%>>'
+			.	$this->JText($this->label) . $required
 			.	'</'. $this->markup .'>';
 		return $html;
 	}
@@ -68,10 +102,15 @@ class JDomHtmlFormLabel extends JDomHtmlForm
 	protected function parseVars($vars)
 	{
 		return parent::parseVars(array_merge(array(
-			'DOM_ID'		=> $this->domId,
+			'DOM_ID'	=> $this->domId,
 			'STYLE'		=> $this->buildDomStyles(),
-			'CLASS'			=> $this->buildDomClass(),		//With attrib name
-			'SELECTORS'		=> $this->buildSelectors(),
+			'CLASS'		=> $this->buildDomClass(),		//With attrib name
+			'SELECTORS'	=> $this->buildSelectors(),
 		), $vars));
 	}
+	
+	function buildJS()
+	{
+
+	}	
 }
